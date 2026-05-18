@@ -1,0 +1,55 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Miruthula\AppData\Local\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.14.4', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.0.3', 'pluggy': '1.6.0'}, 'Plugins': {'base-url': '2.1.0', 'html': '4.2.0', 'metadata': '3.1.1', 'playwright': '0.7.2'}, 'Base URL': ''}
+rootdir: C:\Users\Miruthula\Desktop\Support_Page_Test
+plugins: base-url-2.1.0, html-4.2.0, metadata-3.1.1, playwright-0.7.2
+collecting ... collected 1 item
+
+tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium]  Step 1 PASSED: Open Support Website
+ Step 2 PASSED: Click Login Button
+ Step 3 PASSED: Enter Client Code: 63832650
+ Step 4 PASSED: Select Date of Birth: 21/0/2003
+ Step 5 PASSED: Click Submit Button
+ Attempt 1: Opening YopMail...
+ OTP Found: 71871310
+ Step 6 PASSED: Get OTP from YopMail: gateicaujohei-9617@yopmail.com
+ Step 7 PASSED: Submit OTP
+ Step 8 PASSED: Navigate to Support Home
+ Step 9 PASSED: Click KYC Modifications
+ Step 10 PASSED: Click Name change in Demat Account
+ Step 11 PASSED: Click Create Ticket Button
+ Step 12 PASSED: Type Description: Testing
+ Submit clicked using: //button[@type='submit']
+ Step 13 PASSED: Click Submit Ticket
+ Step 14 FAILED: Verify Ticket Created Success Message | Reason: Page.wait_for_selector: Timeout 10000ms exceeded.
+Call log:
+  - waiting for locator("text=ticket has been created") to be visible
+
+FAILED
+
+================================== FAILURES ===================================
+______________ TestSupportPage.test_support_page_flow[chromium] _______________
+tests\Support_Page_Test.py:214: in test_support_page_flow
+    run_step(14, "Verify Ticket Created Success Message", step14)
+tests\Support_Page_Test.py:20: in run_step
+    action()
+tests\Support_Page_Test.py:211: in step14
+    page.wait_for_selector("text=ticket has been created", timeout=10000)
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\sync_api\_generated.py:8217: in wait_for_selector
+    self._sync(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_page.py:419: in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_frame.py:369: in wait_for_selector
+    await self._channel.send(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:69: in send
+    return await self._connection.wrap_api_call(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:559: in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E   playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 10000ms exceeded.
+E   Call log:
+E     - waiting for locator("text=ticket has been created") to be visible
+=========================== short test summary info ===========================
+FAILED tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium]
+======================== 1 failed in 120.40s (0:02:00) ========================

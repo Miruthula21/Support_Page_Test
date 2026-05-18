@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Miruthula\AppData\Local\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.14.4', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.0.3', 'pluggy': '1.6.0'}, 'Plugins': {'html': '4.2.0', 'metadata': '3.1.1'}}
+rootdir: C:\Users\Miruthula\Desktop\Support_Page_Test
+plugins: html-4.2.0, metadata-3.1.1
+collecting ... collected 1 item
+
+tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow ERROR [100%]
+
+=================================== ERRORS ====================================
+__________ ERROR at setup of TestSupportPage.test_support_page_flow ___________
+file C:\Users\Miruthula\Desktop\Support_Page_Test\tests\Support_Page_Test.py, line 9
+      def test_support_page_flow(self, page: Page):
+E       fixture 'page' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, capteesys, doctest_namespace, extra, extras, include_metadata_in_junit_xml, metadata, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, subtests, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+C:\Users\Miruthula\Desktop\Support_Page_Test\tests\Support_Page_Test.py:9
+- Generated html report: file:///C:/Users/Miruthula/Desktop/Support_Page_Test/reports/Support_Page_Report_26-04-2026_00-54-35.html -
+=========================== short test summary info ===========================
+ERROR tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow
+============================== 1 error in 0.43s ===============================

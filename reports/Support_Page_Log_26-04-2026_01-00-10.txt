@@ -1,0 +1,46 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Miruthula\AppData\Local\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.14.4', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.0.3', 'pluggy': '1.6.0'}, 'Plugins': {'base-url': '2.1.0', 'html': '4.2.0', 'metadata': '3.1.1', 'playwright': '0.7.2'}, 'Base URL': ''}
+rootdir: C:\Users\Miruthula\Desktop\Support_Page_Test
+plugins: base-url-2.1.0, html-4.2.0, metadata-3.1.1, playwright-0.7.2
+collecting ... collected 1 item
+
+tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium] FAILED [100%]
+
+================================== FAILURES ===================================
+______________ TestSupportPage.test_support_page_flow[chromium] _______________
+tests\Support_Page_Test.py:22: in test_support_page_flow
+    page.locator("select[data-handler='selectMonth']").select_option(label="January")
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\sync_api\_generated.py:17630: in select_option
+    self._sync(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_locator.py:597: in select_option
+    return await self._frame.select_option(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_frame.py:781: in select_option
+    return await self._channel.send("selectOption", self._timeout, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:69: in send
+    return await self._connection.wrap_api_call(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:559: in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E   playwright._impl._errors.TimeoutError: Locator.select_option: Timeout 30000ms exceeded.
+E   Call log:
+E     - waiting for locator("select[data-handler='selectMonth']")
+E       - locator resolved to <select data-event="change" aria-label="Select month" data-handler="selectMonth" class="ui-datepicker-month">…</select>
+E     - attempting select option action
+E       2 × waiting for element to be visible and enabled
+E         - did not find some options
+E       - retrying select option action
+E       - waiting 20ms
+E       2 × waiting for element to be visible and enabled
+E         - did not find some options
+E       - retrying select option action
+E         - waiting 100ms
+E       59 × waiting for element to be visible and enabled
+E          - did not find some options
+E        - retrying select option action
+E          - waiting 500ms
+- Generated html report: file:///C:/Users/Miruthula/Desktop/Support_Page_Test/reports/Support_Page_Report_26-04-2026_01-00-10.html -
+=========================== short test summary info ===========================
+FAILED tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium]
+============================= 1 failed in 59.66s ==============================

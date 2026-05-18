@@ -1,0 +1,44 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.4, pytest-9.0.3, pluggy-1.6.0 -- C:\Users\Miruthula\AppData\Local\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+metadata: {'Python': '3.14.4', 'Platform': 'Windows-11-10.0.26200-SP0', 'Packages': {'pytest': '9.0.3', 'pluggy': '1.6.0'}, 'Plugins': {'base-url': '2.1.0', 'html': '4.2.0', 'metadata': '3.1.1', 'playwright': '0.7.2'}, 'Base URL': ''}
+rootdir: C:\Users\Miruthula\Desktop\Support_Page_Test
+plugins: base-url-2.1.0, html-4.2.0, metadata-3.1.1, playwright-0.7.2
+collecting ... collected 1 item
+
+tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium]  Step 1 PASSED: Open Support Website
+ Step 2 PASSED: Click Login Button
+ Step 3 PASSED: Enter Client Code: 63832650
+ Step 4 PASSED: Select Date of Birth: 21/0/2003
+ Step 5 PASSED: Click Submit Button
+ Step 6 FAILED: Get OTP from YopMail: gateicaujohei-9617@yopmail.com | Reason: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://yopmail.com/", waiting until "load"
+
+FAILED
+
+================================== FAILURES ===================================
+______________ TestSupportPage.test_support_page_flow[chromium] _______________
+tests\Support_Page_Test.py:98: in test_support_page_flow
+    run_step(6, f"Get OTP from YopMail: {YOPMAIL_ID}", step6)
+tests\Support_Page_Test.py:20: in run_step
+    action()
+tests\Support_Page_Test.py:84: in step6
+    new_page.goto("https://yopmail.com/")
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\sync_api\_generated.py:9054: in goto
+    self._sync(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_page.py:552: in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_frame.py:153: in goto
+    await self._channel.send(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:69: in send
+    return await self._connection.wrap_api_call(
+..\..\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py:559: in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+E   playwright._impl._errors.TimeoutError: Page.goto: Timeout 30000ms exceeded.
+E   Call log:
+E     - navigating to "https://yopmail.com/", waiting until "load"
+=========================== short test summary info ===========================
+FAILED tests/Support_Page_Test.py::TestSupportPage::test_support_page_flow[chromium]
+======================== 1 failed in 121.86s (0:02:01) ========================

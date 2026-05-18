@@ -1,0 +1,4 @@
+@echo off
+cd /d C:\Users\Miruthula\Desktop\Support_Page_Test
+C:\Users\Miruthula\AppData\Local\Python\pythoncore-3.14-64\python.exe Support_Page_Run.py
+pause
