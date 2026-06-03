@@ -177,9 +177,9 @@ def run_tests(project_path):
     print(f"  [i]  Exit Code : {process.returncode}")
 
     if process.returncode == 0:
-        print("  [OK] Tests completed successfully!")
+        print("  [OK] Tests and email report completed successfully!")
     else:
-        print("  [!!] Tests completed with failures!")
+        print("  [!!] Tests or email report completed with failures!")
 
     return process.returncode, duration, all_output
 
@@ -289,7 +289,10 @@ if __name__ == "__main__":
     # Done
     header("AGENT COMPLETE")
     print(f"  Finished : {datetime.datetime.now().strftime('%d %b %Y, %I:%M:%S %p')}")
-    print("  Email report sent to your inbox")
+    if exit_code == 0:
+        print("  Email report sent to your inbox")
+    else:
+        print("  Email report was not sent. Check the mail error above.")
     print("  Full summary shown above")
     print("=" * 60)
 

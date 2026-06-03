@@ -13,6 +13,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from Support_Page_Config import EMAIL_REPORT
+from teams_reporter import send_teams_report
 
 
 def find_latest_video():
@@ -54,6 +55,9 @@ def send_report(status: str, video_path: str, step_results: list, duration: str)
     if isinstance(receivers, str):
         receivers = [receivers]
 
+    print("Mail sender:", EMAIL_REPORT["sender"])
+    print("Mail receiver:", ", ".join(receivers))
+
     now = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
 
     step_rows = ""
@@ -64,10 +68,10 @@ def send_report(status: str, video_path: str, step_results: list, duration: str)
 
         step_rows += f"""
         <tr style="background:{color}">
-            <td>{html.escape(str(step.get('step', '')))}</td>
-            <td>{icon} {html.escape(step_status)}</td>
-            <td>{html.escape(str(step.get('name', '')))}</td>
-            <td>{html.escape(str(step.get('reason', '')))}</td>
+            <td style="padding:10px;border:1px solid #d1d5db">{html.escape(str(step.get('step', '')))}</td>
+            <td style="padding:10px;border:1px solid #d1d5db;font-weight:700">{icon} {html.escape(step_status)}</td>
+            <td style="padding:10px;border:1px solid #d1d5db">{html.escape(str(step.get('name', '')))}</td>
+            <td style="padding:10px;border:1px solid #d1d5db">{html.escape(str(step.get('reason', '')))}</td>
         </tr>
         """
 
@@ -82,28 +86,33 @@ def send_report(status: str, video_path: str, step_results: list, duration: str)
 
     html_body = f"""
     <html>
-    <body style="font-family:Arial">
-
-        <h2>Support Portal Automation Report</h2>
-
-        <h3>&#129504; Code Review: PASS</h3>
-        <h3>&#129514; Test Execution: {html.escape(status)}</h3>
-        <h3>&#9201; Duration: {html.escape(duration)}</h3>
-
-        <h3>&#128202; Step Results</h3>
-        <table border="1" style="border-collapse:collapse;width:100%">
-            <tr style="background:#f3f4f6">
-                <th>Step</th>
-                <th>Status</th>
-                <th>Name</th>
-                <th>Reason</th>
-            </tr>
-            {step_rows}
-        </table>
-
-        <p><b>Time:</b> {html.escape(now)}</p>
-        <p><b>Video Recording:</b> {video_line}</p>
-
+    <body style="margin:0;background:#f4f6f8;font-family:Arial,sans-serif;color:#111827">
+        <div style="max-width:1080px;margin:0 auto;padding:20px">
+            <div style="background:#ffffff;border:1px solid #e5e7eb">
+                <div style="background:#1f3f68;color:#ffffff;padding:22px 24px">
+                    <div style="font-size:22px;font-weight:700">Support Portal Automation Report</div>
+                    <div style="font-size:13px;margin-top:6px">Generated: {html.escape(now)} | Duration: {html.escape(duration)}</div>
+                </div>
+                <div style="padding:18px 24px 24px">
+                    <div style="font-size:14px;font-weight:700;margin-bottom:14px">
+                        Code Review: PASS &nbsp;|&nbsp; Test Execution:
+                        <span style="background:{'#dcfce7' if status == 'PASS' else '#fee2e2'};color:{'#047857' if status == 'PASS' else '#b91c1c'};padding:7px 18px;border-radius:5px">{html.escape(status)}</span>
+                    </div>
+                    <table style="border-collapse:collapse;width:100%;font-size:13px">
+                        <thead>
+                            <tr style="background:#344153;color:#ffffff;text-align:left">
+                                <th style="padding:10px;border:1px solid #4b5563">Step</th>
+                                <th style="padding:10px;border:1px solid #4b5563">Status</th>
+                                <th style="padding:10px;border:1px solid #4b5563">Name</th>
+                                <th style="padding:10px;border:1px solid #4b5563">Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>{step_rows}</tbody>
+                    </table>
+                    <div style="font-size:12px;color:#4b5563;margin-top:14px"><b>Video Recording:</b> {video_line}</div>
+                </div>
+            </div>
+        </div>
     </body>
     </html>
     """
@@ -118,7 +127,8 @@ def send_report(status: str, video_path: str, step_results: list, duration: str)
 
     try:
         server = smtplib.SMTP_SSL(EMAIL_REPORT["smtp_server"], EMAIL_REPORT["smtp_port"])
-        server.login(EMAIL_REPORT["sender"], EMAIL_REPORT["password"])
+        smtp_username = EMAIL_REPORT.get("username", EMAIL_REPORT["sender"])
+        server.login(smtp_username, EMAIL_REPORT["password"])
         server.sendmail(EMAIL_REPORT["sender"], receivers, msg.as_string())
         server.quit()
         print("Mail sent successfully")
@@ -126,8 +136,18 @@ def send_report(status: str, video_path: str, step_results: list, duration: str)
             print("Video attached:", video_path)
         else:
             print("Video not found - email sent without video")
+        send_teams_report(
+            title=f"Support Portal Automation Report - {status}",
+            status=status,
+            html_body=html_body,
+            video_path=video_path,
+            step_results=step_results,
+            duration=duration,
+            flow_details={"report_name": "Support Portal Automation Report"},
+        )
     except Exception as e:
         print("Mail failed:", e)
+        raise
 
 
 if __name__ == "__main__":
@@ -135,7 +155,7 @@ if __name__ == "__main__":
     start_time = time.time()
 
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "tests/Support_Page_Test.py", "-v", "-s", "--tb=short"],
+        [sys.executable, "-m", "pytest", "tests/Support_Page_Test.py", "-v", "-s", "--tb=short", "--headed"],
         capture_output=True,
         text=True,
         encoding="utf-8",
