@@ -12,6 +12,8 @@ from Support_Page_Config import (
 )
 
 BASE_URL = "https://support.navia.co.in/support/home"
+ACTION_TIMEOUT_MS = 90000
+NAVIGATION_TIMEOUT_MS = 90000
 
 # This list stores each step result
 step_results = []
@@ -48,10 +50,12 @@ class TestSupportPage:
     def test_support_page_flow(self, page: Page):
 
         step_results.clear()
+        page.set_default_timeout(ACTION_TIMEOUT_MS)
+        page.set_default_navigation_timeout(NAVIGATION_TIMEOUT_MS)
 
         # ── STEP 1: Open Website ──────────────────────
         def step1():
-            page.goto(BASE_URL)
+            page.goto(BASE_URL, timeout=NAVIGATION_TIMEOUT_MS, wait_until="domcontentloaded")
             page.wait_for_timeout(3000)
         run_step(1, "Open Support Website", step1)
 
@@ -280,7 +284,7 @@ class TestSupportPage:
 
         # ── STEP 8: Go to Support Home ────────────────
         def step8():
-            page.goto(BASE_URL)
+            page.goto(BASE_URL, timeout=NAVIGATION_TIMEOUT_MS, wait_until="domcontentloaded")
             page.wait_for_timeout(4000)
         run_step(8, "Navigate to Support Home", step8)
 
@@ -443,7 +447,11 @@ class TestSupportPage:
 
             if not clicked:
                 print(" Track link not found, navigating directly...")
-                page.goto("https://support.navia.co.in/support/home?tickets=true#ticketList")
+                page.goto(
+                    "https://support.navia.co.in/support/home?tickets=true#ticketList",
+                    timeout=NAVIGATION_TIMEOUT_MS,
+                    wait_until="domcontentloaded",
+                )
 
             page.wait_for_timeout(3000)
         run_step(15, "Click Track Tickets", step15)
